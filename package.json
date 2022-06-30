@@ -1,0 +1,22 @@
+{
+  "name": "BlogBeta",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "md5": "^2.3.0",
+    "mockjs": "^1.1.0",
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.18",
+    "query-string": "^7.1.1",
+    "querystring": "^0.2.1",
+    "sequelize": "^6.21.1"
+  },
+  "scripts": {
+    "dev": "nodemon -x npm run server",
+    "server": "node index.js"
+  }
+}
