@@ -1,23 +1,30 @@
 {
-  "name": "BlogBeta",
+  "name": "koa",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
-  "license": "MIT",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "crypto": "^1.0.1",
-    "express": "^4.18.1",
-    "jsonwebtoken": "^8.5.1",
-    "md5": "^2.3.0",
-    "mockjs": "^1.1.0",
-    "mysql2": "^2.3.3",
-    "nodemon": "^2.0.18",
-    "query-string": "^7.1.1",
-    "querystring": "^0.2.1",
-    "sequelize": "^6.21.1"
-  },
   "scripts": {
     "serve": "nodemon -x npm run server",
-    "server": "node index.js"
+    "server": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-jwt": "^4.0.3",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^12.0.0",
+    "koa-static": "^5.0.0",
+    "koa2-cors": "^2.0.6",
+    "mockjs": "^1.1.0",
+    "moment": "^2.29.4",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.19",
+    "query-string": "^7.1.1",
+    "sequelize": "^6.21.4"
   }
 }

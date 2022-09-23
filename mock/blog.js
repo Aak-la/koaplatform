@@ -1,8 +1,6 @@
 const Mock = require("mockjs");
 const qs = require("query-string");
 const result1 = Mock.mock({
-  code: 0,
-  msg: "",
   "data|10-20": [
     {
       "id|+1": 1,
@@ -15,8 +13,6 @@ const result1 = Mock.mock({
 const result2 = Mock.mock(function (options) {
   const query = qs.parse(options);
   return Mock.mock({
-    code: 0,
-    msg: "",
     data: {
       total: 2000,
       [`rows|${query.limit || 10}`]: [
@@ -38,8 +34,6 @@ const result2 = Mock.mock(function (options) {
   });
 });
 const result3 = Mock.mock({
-  code: 0,
-  msg: "",
   data: {
     id: "@guid",
     title: "CORS跨域方案详解",
@@ -269,8 +263,6 @@ const result3 = Mock.mock({
   },
 });
 const result4 = Mock.mock({
-  code: 0,
-  msg: "",
   data: {
     id: "@guid",
     nickname: "@cname",
@@ -287,8 +279,6 @@ const result4 = Mock.mock({
 const result5 = Mock.mock(function (options) {
   const query = qs.parse(options.url);
   return Mock.mock({
-    code: 0,
-    msg: "",
     data: {
       total: 52,
       [`rows|${query.limit || 10}`]: [
