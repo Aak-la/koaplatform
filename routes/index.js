@@ -27,4 +27,7 @@ router.use("/project", project.routes(), project.allowedMethods());
 const about = require("./about");
 router.use("/about", about.routes(), about.allowedMethods());
 
+const logout = require("./logout");
+router.use("/logout", logout.routes(), logout.allowedMethods());
+
 module.exports = router;

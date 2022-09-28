@@ -28,4 +28,4 @@ app.use(
 );
 app.use(routers.routes()).use(routers.allowedMethods());
 app.listen(Port);
-console.log("[demo] start-quick is starting at port 3000");
+console.log("starting at port 3000");

@@ -11,16 +11,16 @@ module.exports = {
       .then(
         () => {
           ctx.body = {
-            data: {
+            
               msg: "添加评论成功",
-            },
+           
           };
         },
         () => {
           ctx.body = {
-            data: {
+            
               msg: "添加失败成功",
-            },
+           
           };
         }
       );

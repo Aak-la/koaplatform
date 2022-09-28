@@ -19,6 +19,10 @@ const project = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    objective: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
     timestamps: true,

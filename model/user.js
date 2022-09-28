@@ -10,10 +10,19 @@ const user = sequelize.define(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 123,
     },
     avatar: {
       type: DataTypes.STRING(1500),
+      allowNull: false,
+      defaultValue:
+        "https://img1.baidu.com/it/u=2958856559,4245953736&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=500",
+    },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   },

@@ -1,44 +1,73 @@
 const user = require("../../model/user");
-const jwt = require("jsonwebtoken");
+const {
+  verifyPwd,
+  encrypted,
+  createToken,
+  verifyToken,
+} = require("../../utils/utils");
 
 module.exports = {
   logIn: async (ctx) => {
     let { name, password } = ctx.request.body;
-    let data = await user.findAll({
-      where: {
-        username: name,
-      },
-    });
-    if (data.length !== 0 && data[0].password === password) {
-      let name = data[0].name;
-      let token = jwt.sign({ name }, "Bear", {
-        expiresIn: 1440,
-      });
+    if (!name || !password) {
       ctx.body = {
-        data: {
-          code: 200,
-          msg: "登录成功",
-          type: "success",
-          token: token,
-        },
+        status: "error",
+        msg: "用户名与密码不能为空",
       };
-    } else {
-      ctx.body = {
-        data: {
-          code: 500,
-          msg: "未注册账号或密码不正确",
-        },
-      };
+      return;
     }
+    await user
+      .findAll({
+        where: {
+          username: name,
+        },
+      })
+      .then((res) => {
+        if (res.length > 0) {
+          const VerifyPwd = res[0].dataValues.password;
+          const userInfo = {
+            id: res[0].dataValues.id,
+            name: res[0].dataValues.username,
+            avatar: res[0].dataValues.avatar,
+          };
+          const flag = verifyPwd(password, VerifyPwd);
+          const token = createToken(userInfo);
+          if (flag) {
+            ctx.body = {
+              status: 200,
+              msg: "登录成功",
+              token: token,
+              type: "success",
+              avatar: res[0].dataValues.avatar,
+            };
+          } else {
+            ctx.status = 400;
+            ctx.body = {
+              status: "error",
+              msg: "密码错误",
+              type: "error",
+            };
+          }
+        } else {
+          ctx.body = {
+            status: "error",
+            msg: "请检查账户名",
+            type: "warning",
+          };
+        }
+      });
   },
   register: async (ctx) => {
-    let { name, password } = ctx.request.body;
-    let data = await user.findAll({
-      where: {
-        username: name,
-      },
-    });
-    if (data.length !== 0) {
+    let { username, password, phone, email } = ctx.request.body;
+    try {
+      let data = await user.findAll({
+        where: {
+          username: ctx.request.body.username,
+        },
+      });
+    } catch (error) {}
+
+    /* if (data.length !== 0) {
       ctx.body = {
         data: {
           code: 200,
@@ -46,25 +75,39 @@ module.exports = {
         },
       };
     } else {
-      await user.create({ username: name, password: password }).then(
-        () => {
-          ctx.body = {
-            data: {
-              code: 200,
-              msg: "账号注册成功",
-              type: "success",
-            },
-          };
-        },
-        () => {
-          ctx.body = {
-            data: {
-              code: 200,
-              msg: "账号注册失败",
-            },
-          };
-        }
-      );
-    }
+      await user
+        .create({
+          username: username,
+          password: password,
+          phone: phone,
+          email: email,
+        })
+        .then(
+          () => {
+            ctx.body = {
+              data: {
+                code: 200,
+                msg: "账号注册成功",
+                type: "success",
+              },
+            };
+          },
+          () => {
+            ctx.body = {
+              data: {
+                code: 200,
+                msg: "账号注册失败",
+              },
+            };
+          }
+        );
+    } */
+  },
+  logout: async (ctx) => {
+    ctx.body = {
+      data: {
+        code: 200,
+      },
+    };
   },
 };
