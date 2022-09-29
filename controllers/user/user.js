@@ -1,4 +1,5 @@
 const user = require("../../model/user");
+
 const {
   verifyPwd,
   encrypted,
@@ -58,56 +59,33 @@ module.exports = {
       });
   },
   register: async (ctx) => {
-    let { username, password, phone, email } = ctx.request.body;
-    try {
-      let data = await user.findAll({
-        where: {
-          username: ctx.request.body.username,
-        },
-      });
-    } catch (error) {}
-
-    /* if (data.length !== 0) {
+    let userInfo = ctx.request.body;
+    const res = await user.findAll({ where: { username: userInfo.username } });
+    if (res.length > 1) {
       ctx.body = {
-        data: {
-          code: 200,
-          msg: "该账号已被注册",
-        },
+        status: "error",
+        msg: "当前用户名已存在",
       };
     } else {
-      await user
-        .create({
-          username: username,
-          password: password,
-          phone: phone,
-          email: email,
-        })
-        .then(
-          () => {
-            ctx.body = {
-              data: {
-                code: 200,
-                msg: "账号注册成功",
-                type: "success",
-              },
-            };
-          },
-          () => {
-            ctx.body = {
-              data: {
-                code: 200,
-                msg: "账号注册失败",
-              },
-            };
-          }
-        );
-    } */
+      userInfo.password = await encrypted(userInfo.password);
+      let result = await user.create(userInfo);
+      if (result) {
+        ctx.body = {
+          status: "success",
+          msg: "注册成功",
+        };
+      } else {
+        ctx.body = {
+          status: "error",
+          msg: "注册失败",
+        };
+      }
+    }
   },
   logout: async (ctx) => {
     ctx.body = {
-      data: {
-        code: 200,
-      },
+      status: "success",
+      msg: "退出成功",
     };
   },
 };
