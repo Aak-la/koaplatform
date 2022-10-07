@@ -3,6 +3,18 @@ const classification = require("../../model/classification");
 
 module.exports = {
   types: async (ctx) => {
+    const res = await blog.findAll();
+    let getGroup = (data) => {
+      let groups = {};
+      data.forEach((c) => {
+        let value = c.category;
+        groups[value] = groups[value] || [];
+        groups[value].push(c);
+      });
+      return groups;
+    };
+    let getGroups = getGroup(res);
+    console.log(getGroups);
     const data = await classification.findAll();
     ctx.body = {
       data,

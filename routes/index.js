@@ -6,12 +6,6 @@ const router = new Router({
 const banner = require("./banner");
 router.use("/banner", banner.routes(), banner.allowedMethods());
 
-const login = require("./login");
-router.use("/login", login.routes(), login.allowedMethods());
-
-const register = require("./register");
-router.use("/register", register.routes(), register.allowedMethods());
-
 const setting = require("./setting");
 router.use("/setting", setting.routes(), setting.allowedMethods());
 
@@ -27,7 +21,7 @@ router.use("/project", project.routes(), project.allowedMethods());
 const about = require("./about");
 router.use("/about", about.routes(), about.allowedMethods());
 
-const logout = require("./logout");
-router.use("/logout", logout.routes(), logout.allowedMethods());
+const logout = require("./user");
+router.use("/user", logout.routes(), logout.allowedMethods());
 
 module.exports = router;

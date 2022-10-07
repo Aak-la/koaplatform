@@ -8,20 +8,24 @@ const routers = require("./routes/index");
 const app = new Koa();
 const Port = process.env.PORT || 8080;
 const bodyParser = require("koa-bodyparser");
-/* const jurisdiction = require("./middleware/index");
-app.use(jurisdiction()); */
+const jurisdiction = require("./middleware/index");
+app.use(jurisdiction());
 app.use(bodyParser());
+const allowOrigins = [
+  "http://localhost:8081", // 需要跨域的端口，与本服务器端口不一样，请注意。
+];
 app.use(
   cors({
     origin: function (ctx) {
-      if (ctx.url === "/test") {
-        return "*"; // 允许来自所有域名请求
+      if (allowOrigins.includes(ctx.header.origin)) {
+        return ctx.header.origin;
       }
-      return "http://localhost:8081";
+      return false;
     },
     exposeHeaders: ["WWW-Authenticate", "Server-Authorization"],
     maxAge: 5,
     credentials: true,
+    withCredentials: true,
     allowMethods: ["GET", "POST", "DELETE"],
     allowHeaders: ["Content-Type", "Authorization", "Accept"],
   })
