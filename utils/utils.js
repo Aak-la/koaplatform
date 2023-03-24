@@ -6,10 +6,6 @@ const saltRounds = 10; // 加密密码计算强度
 
 // 生成token
 const createToken = (userInfo, timeout = "5h") => {
-  /*
-    id:用户id,
-    timeout:token过期时间
-  */
   const token_info = {
     userInfo,
     ctime: new Date().getTime(), //token创建时间戳

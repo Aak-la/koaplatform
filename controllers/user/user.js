@@ -1,10 +1,4 @@
 const user = require("../../model/user");
-const Koa = require("koa");
-const serve = require("koa-static"); // 图片处理
-const fs = require("fs"); // 图片路径
-const path = require("path");
-const app = new Koa(); // 图片路径
-app.use(serve(__dirname));
 const { verifyPwd, encrypted, createToken } = require("../../utils/utils");
 
 module.exports = {
@@ -22,7 +16,6 @@ module.exports = {
         username: name,
       },
     });
-    console.log(res);
     if (res.length > 0) {
       const VerifyPwd = res[0].dataValues.password;
       const userInfo = {
@@ -124,7 +117,7 @@ module.exports = {
             email: v.email,
             id: v.id,
             username: v.username,
-            phone: v.phone, 
+            phone: v.phone,
             permissions: v.permissions
           }
         )
