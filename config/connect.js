@@ -10,6 +10,10 @@ const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
     idle: config.pool.idle,
   },
   logging: false,
+  dialectOptions: {
+    dateStrings: true,
+    typeCast: true,
+  },
 });
 async function add() {
   try {

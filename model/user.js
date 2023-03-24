@@ -25,6 +25,11 @@ const user = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    permissions: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue:'1'
+    },
   },
   {
     timestamps: true,

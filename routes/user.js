@@ -8,4 +8,5 @@ const routers = router
   .post("/updateTheUserData", user.updateTheUserData)
   .get("/getAllUserData", user.getAllUserData)
   .post("/deleteTheUserData", user.deleteTheUserData);
+
 module.exports = routers;

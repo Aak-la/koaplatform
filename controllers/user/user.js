@@ -1,11 +1,11 @@
 const user = require("../../model/user");
-
-const {
-  verifyPwd,
-  encrypted,
-  createToken,
-  verifyToken,
-} = require("../../utils/utils");
+const Koa = require("koa");
+const serve = require("koa-static"); // 图片处理
+const fs = require("fs"); // 图片路径
+const path = require("path");
+const app = new Koa(); // 图片路径
+app.use(serve(__dirname));
+const { verifyPwd, encrypted, createToken } = require("../../utils/utils");
 
 module.exports = {
   logIn: async (ctx) => {
@@ -22,6 +22,7 @@ module.exports = {
         username: name,
       },
     });
+    console.log(res);
     if (res.length > 0) {
       const VerifyPwd = res[0].dataValues.password;
       const userInfo = {
@@ -39,6 +40,7 @@ module.exports = {
           type: "success",
           avatar: res[0].dataValues.avatar,
           username: res[0].dataValues.username,
+          permissions: res[0].dataValues.permissions,
         };
       } else {
         ctx.status = 400;
@@ -57,25 +59,27 @@ module.exports = {
     }
   },
   register: async (ctx) => {
-    let userInfo = ctx.request.body;
-    const res = await user.findAll({ where: { username: userInfo.username } });
-    if (res.length > 1) {
+    let { params } = ctx.request.body;
+    const res = await user.findAll({ where: { username: params.username } });
+    if (res.length != 0) {
       ctx.body = {
-        status: "error",
+        status: 202,
         msg: "当前用户名已存在",
+        type: "warning",
       };
     } else {
-      userInfo.password = await encrypted(userInfo.password);
-      let result = await user.create(userInfo);
+      params.password = await encrypted(params.password);
+      let result = await user.create(params);
       if (result) {
         ctx.body = {
-          status: "success",
+          status: 200,
           msg: "注册成功",
         };
       } else {
         ctx.body = {
-          status: "error",
+          status: 403,
           msg: "注册失败",
+          type: "warning",
         };
       }
     }
@@ -110,12 +114,27 @@ module.exports = {
   },
   getAllUserData: async (ctx) => {
     const res = await user.findAll();
+    let data = [];
+    res.map((v) => {
+      data.push(
+        Object.assign(
+          {},
+          {
+            avatar: v.avatar,
+            email: v.email,
+            id: v.id,
+            username: v.username,
+            phone: v.phone, 
+            permissions: v.permissions
+          }
+        )
+      );
+    });
     ctx.body = {
-      res,
+      data,
     };
   },
   deleteTheUserData: async (ctx) => {
-    console.log(ctx.request.body);
     const res = await user.findOne({ where: { id: ctx.request.body.id } });
     if (res) {
       const callback = res.destroy({ where: { id: ctx.request.body.id } });
