@@ -26,7 +26,6 @@ module.exports = {
   },
   delete: async (ctx) => {
     let id = ctx.params.id;
-    console.log(id);
     try {
       const good = await goods.findOne({
         where: {

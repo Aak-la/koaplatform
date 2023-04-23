@@ -4,6 +4,6 @@ const order = require("../controllers/order/order");
 const routers = router
     .post("/add", order.add)
     .get("/get", order.get)
-    .get("/delete", order.delete);
+    .post("/delete", order.delete);
 
 module.exports = routers;

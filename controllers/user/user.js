@@ -36,16 +36,15 @@ module.exports = {
           permissions: res[0].dataValues.permissions,
         };
       } else {
-        ctx.status = 400;
         ctx.body = {
-          status: "error",
+          status: 400,
           msg: "密码错误",
           type: "error",
         };
       }
     } else {
       ctx.body = {
-        status: "error",
+        status: 400,
         msg: "请检查账户名",
         type: "warning",
       };

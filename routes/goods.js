@@ -5,5 +5,4 @@ const routers = router
   .post("/add", goods.add)
   .get("/get", goods.get)
   .get("/delete/:id", goods.delete);
-
 module.exports = routers;

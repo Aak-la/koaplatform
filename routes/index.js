@@ -17,4 +17,7 @@ router.use("/classify", classify.routes(), upload.allowedMethods());
 
 const order = require("./order");
 router.use("/order", order.routes(), order.allowedMethods());
+
+const theChart = require("./theChart");
+router.use("/chart", theChart.routes(), theChart.allowedMethods());
 module.exports = router;

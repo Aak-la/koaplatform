@@ -1,20 +1,20 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const token_key = "Bear"; // 自定义token校验令牌
-const saltRounds = 10; // 加密密码计算强度
+const token_key = "Bear";
+const saltRounds = 10;
 
-// 生成token
+
 const createToken = (userInfo, timeout = "5h") => {
   const token_info = {
     userInfo,
-    ctime: new Date().getTime(), //token创建时间戳
+    ctime: new Date().getTime(),
   };
-  const token = jwt.sign(token_info, token_key, { expiresIn: timeout }); // 生成token
+  const token = jwt.sign(token_info, token_key, { expiresIn: timeout });
   return token;
 };
 
-// 校验token
+
 const verifyToken = async (old_token) => {
   try {
     const userInfo = await jwt.verify(old_token.split(" ")[1], "Bear");
@@ -24,7 +24,7 @@ const verifyToken = async (old_token) => {
   }
 };
 
-// 密码加密
+
 const encrypted = (password) => {
   return new Promise((resolve) => {
     bcrypt.genSalt(saltRounds, (err, salt) => {
@@ -38,12 +38,8 @@ const encrypted = (password) => {
   });
 };
 
-// 校验密码
+
 const verifyPwd = (password, hash) => {
-  /*
-    password: 需要校验的密码
-    hash: 数据库中已加密的密码
-  */
   return new Promise((resolve) => {
     bcrypt.compare(password, hash, (err, res) => {
       if (err) {

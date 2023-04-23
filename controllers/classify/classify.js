@@ -1,5 +1,4 @@
 const classify = require("../../model/classify");
-const goods = require("../goods/goods");
 
 module.exports = {
   add: async (ctx) => {

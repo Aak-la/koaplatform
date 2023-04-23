@@ -1,6 +1,8 @@
 const Koa = require("koa");
 const path = require("path");
-
+let { createClassifyData,
+  createLienData,
+  createOrderData } = require("./utils/randomData")
 const cors = require("koa2-cors");
 require("./model/index");
 const routers = require("./routes/index");
@@ -9,27 +11,22 @@ const Port = process.env.PORT || 8080;
 const bodyParser = require("koa-bodyparser");
 const jurisdiction = require("./middleware/index");
 const { koaBody } = require("koa-body");
+const WebSocket = require('ws');
 const koaStatic = require("koa-static");
 app.use(koaStatic(path.join(__dirname, "./controllers/upload")));
-
-
-
-
-
 app.use(
   cors({
     origin: function (ctx) {
-      //设置允许来自指定域名请求
       if (ctx.url === "/test") {
-        return "*"; // 允许来自所有域名请求
+        return "*";
       }
-      return "http://localhost:8081"; //只允许http://localhost:8080这个域名的请求
+      return "http://localhost:8081";
     },
-    maxAge: 5, //指定本次预检请求的有效期，单位为秒。
-    credentials: true, //是否允许发送Cookie
-    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], //设置所允许的HTTP请求方法
-    allowHeaders: ["Content-Type", "Authorization", "Accept"], //设置服务器支持的所有头信息字段
-    exposeHeaders: ["WWW-Authenticate", "Server-Authorization"], //设置获取其他自定义字段
+    maxAge: 5,
+    credentials: true,
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization", "Accept"],
+    exposeHeaders: ["WWW-Authenticate", "Server-Authorization"],
   })
 );
 app.use(async (ctx, next) => {
@@ -52,7 +49,23 @@ app.use(
 );
 app.use(jurisdiction());
 app.use(bodyParser());
+const ws = new WebSocket.Server({ port: 3001 });
+ws.on('connection', ws => {
+  console.log('server connection');
+  ws.on('message', msg => {
+    console.log('server receive msg：', msg);
+  });
+  setInterval(() => {
+    let data1 = createClassifyData()
+    let data2 = createLienData()
+    let data3 = createOrderData()
+    let arr = [data1, data2, data3]
+    ws.send(JSON.stringify(arr));
+  }, 2500)
 
+
+
+});
 app.use(routers.routes()).use(routers.allowedMethods());
 app.listen(Port);
 console.log("starting at port" + Port);

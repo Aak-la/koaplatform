@@ -1,6 +1,6 @@
 const sequelize = require("../config/connect");
 const { DataTypes } = require("sequelize");
-const goods = sequelize.define(
+const order = sequelize.define(
     "order",
     {
         id: {
@@ -58,4 +58,4 @@ const goods = sequelize.define(
         updatedAt: "updateTime",
     }
 );
-module.exports = goods;
+module.exports = order;
