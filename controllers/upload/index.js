@@ -1,52 +1,31 @@
 const path = require("path");
-const fse = require("fs-extra");
 const fs = require('fs')
-const folderPath = __dirname;
+//http://localhost:8080/images/ca79715e027f6a57e2e394e00.jpg
 module.exports = {
-  /*  upload: async (ctx) => {
-     const { newFilename, filepath, size, type } = ctx.request.files.file;
- 
-     let src = `${newFilename.substring(0, 21)}newFileName.png`;
-     ifCreate(src)
-     function ifCreate(src) {
-       fs.readdir(folderPath, async (err, files) => {
-         if (err) {
-           console.error(err);
-           return;
-         }
-         const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
-         const images = files.filter(file => {
-           const ext = path.extname(file);
-           return imageExtensions.includes(ext);
-         });
-         if (images.includes(str)) {
-           return
-         } else {
-           const dest = path.join(__dirname, "../upload", src);
-           await fse.move(filepath, dest);
-           ctx.body = {
-             src,
-             filepath,
-             size,
-             type,
-           };
-         }
-       });
- 
-     }
- 
- 
-   }, */
   upload: async (ctx) => {
-    const { newFilename, filepath, size, type } = ctx.request.files.file;
-    let src = `${newFilename}newFileName.png`;
-    const dest = path.join(__dirname, "../upload", src);
-    await fse.move(filepath, dest);
-    ctx.body = {
-      src,
-      filepath,
-      size,
-      type,
-    };
+    let imgList = []
+    const file = ctx.request.files;
+    try {
+      if (file.length == 0) {
+        ctx.body = {
+          state: 400,
+        };
+      } else {
+        for (const item of Object.values(file)) {
+          imgList.push(`${ctx.origin}` + "/images/" + item.newFilename)
+        }
+        let data = JSON.stringify(imgList)
+        ctx.body = {
+          state: 200,
+          data
+        };
+      }
+
+    } catch (error) {
+      ctx.body = {
+        state: 400,
+      };
+    }
+
   },
 };

@@ -1,8 +1,5 @@
 const Koa = require("koa");
 const path = require("path");
-let { createClassifyData,
-  createLienData,
-  createOrderData } = require("./utils/randomData")
 const cors = require("koa2-cors");
 require("./model/index");
 const routers = require("./routes/index");
@@ -13,7 +10,7 @@ const jurisdiction = require("./middleware/index");
 const { koaBody } = require("koa-body");
 const WebSocket = require('ws');
 const koaStatic = require("koa-static");
-app.use(koaStatic(path.join(__dirname, "./controllers/upload")));
+app.use(koaStatic(path.join(__dirname, 'public')));
 app.use(
   cors({
     origin: function (ctx) {
@@ -45,10 +42,22 @@ app.use(async (ctx, next) => {
 app.use(
   koaBody({
     multipart: true,
+    formidable: {
+      uploadDir: path.join(__dirname, "/public/images"),
+      keepExtensions: true
+    }
   })
 );
 app.use(jurisdiction());
 app.use(bodyParser());
+app.use(routers.routes()).use(routers.allowedMethods());
+app.listen(Port);
+console.log("starting at port" + Port);
+
+
+let { createClassifyData,
+  createLienData,
+  createOrderData } = require("./utils/randomData")
 const ws = new WebSocket.Server({ port: 3001 });
 ws.on('connection', ws => {
   console.log('server connection');
@@ -66,6 +75,6 @@ ws.on('connection', ws => {
 
 
 });
-app.use(routers.routes()).use(routers.allowedMethods());
-app.listen(Port);
-console.log("starting at port" + Port);
+
+
+

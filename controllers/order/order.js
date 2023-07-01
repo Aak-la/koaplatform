@@ -11,7 +11,7 @@ module.exports = {
         } catch (error) {
             ctx.body = {
                 state: 400,
-                msg: "添加成功",
+                msg: "添加失败",
             };
         }
     },

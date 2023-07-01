@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "nodemon -x npm run server",
+    "dev": "nodemon -x npm run server",
     "server": "node app.js"
   },
   "author": "",
@@ -25,6 +25,7 @@
     "koa-static": "^5.0.0",
     "koa2-cors": "^2.0.6",
     "mockjs": "^1.1.0",
+    "module-alias": "^2.2.3",
     "moment": "^2.29.4",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
